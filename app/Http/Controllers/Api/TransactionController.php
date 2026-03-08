@@ -7,8 +7,7 @@ use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
-use Illuminate\Http\Request;
- 
+
 class TransactionController extends Controller
 {
     /**
@@ -18,15 +17,17 @@ class TransactionController extends Controller
     {
         return TransactionResource::collection(Transaction::all());
     }
- 
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreTransactionRequest $request)
     {
-        return new TransactionResource(Transaction::create($request->validated()));
+        $transaction = auth()->user()->transactions()->create($request->validated());
+
+        return new TransactionResource($transaction);
     }
- 
+
     /**
      * Display the specified resource.
      */
@@ -34,24 +35,24 @@ class TransactionController extends Controller
     {
         return new TransactionResource($transaction);
     }
- 
+
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
         $transaction->update($request->validated());
- 
+
         return new TransactionResource($transaction);
     }
- 
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Transaction $transaction)
     {
         $transaction->delete();
- 
+
         return response()->noContent();
     }
 }
