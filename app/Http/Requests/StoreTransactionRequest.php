@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreTransactionRequest extends FormRequest
+{
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'category_id' => ['required', 'integer'],
+            'user_id' => ['nullable', 'integer'],
+            'transaction_date' => ['required', 'date'],
+            'amount' => ['required', 'numeric'],
+            'description' => ['required'],
+        ];
+    }
+
+    public function authorize(): bool
+    {
+        return true;
+    }
+}
